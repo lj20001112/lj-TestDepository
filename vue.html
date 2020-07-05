@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>导航栏鼠标</title>
+		<style>
+			.line{
+			background: green;
+			}
+			.active1{
+			background: red;
+			}
+			.green{
+				color: green;
+			}
+			.red{
+				color: red;
+			}
+			
+		</style>
+	</head>
+	<body>
+<div id="app">  
+	<ul>    
+	<li v-for="(m,index) in movies" @click="changeClass(index)" :class="{green:index==current}">{{m}}</li>
+	</ul> 		
+	<button @click="counter++">+</button>
+	{{counter}}
+	<button @click="counter--">-</button>
+	<h1 v-html="url"></h1>
+	<img v-bind:src="imageurl" alt="你好"/>
+	   
+	 <h1 :class="{line:isLine,active1:isActive}">直接放在Class中</h1>
+	 <button @click="btnclick">点击变色</button>
+	 
+	 <h1 :class="getClass()">放在函数中</h1>
+	 <button @click="btnclick">点击变色</button>
+	 
+	 <h1 :style="{fontSize:counter+'px'}">绑定样式</h1>
+	 
+	 <h1>{{fullName}}</h1>
+	 
+	 <table>
+		 <tr>
+		 	<th>编号</th>
+		 	<th>名称</th>
+		 	<th>价格</th>
+		 </tr>
+		 <tr v-for="book in books">
+		 	<td>{{book.id}}</td>
+			<td>{{book.name}}</td>
+			<td>{{book.price}}</td>
+			<td>{{totalprice}}</td>
+		 </tr>
+		 
+	 </table>
+	 
+</div>       
+		         
+		   
+	<script src="vue.js"></script>
+	<script>
+	obj = {
+			message:'hello',
+			movies:['a1','a2','a3'],
+			counter:0,
+			url:'<a href="https://www.baidu.com">百度一下</a>',
+			imageurl:'https://img14.360buyimg.com/mobilecms/s280x280_jfs/t1/143017/39/1723/185650/5ef9ba34Efa2669e8/b167ad8cfe2f4d61.jpg.webp',
+			isActive:true,
+			isLine:true ,
+			isGreen:true,
+			isRed:true,
+			current:0,
+			f1Name:'tom',
+			f2Name:'jery',
+			books:[
+				{id:1,name:'f1',price:21},
+				{id:2,name:'f2',price:22} 
+				]
+		}       
+	
+	var v1 = new Vue({
+		el:"#app",
+		data:obj,
+			computed:{
+			fullName:function(){
+				return this.f1Name+ ''+this.f2Name;
+			},
+			totalprice:function(){
+			let result=0;
+				for(let i=0;i<this.books.length;i++){
+					result+=this.books[i].price;
+				}
+				return result;
+			}
+			},
+		   methods:{
+		   	btnclick:function(){
+		   		this.isActive = !this.isActive;
+		   	},
+			getClass:function(){
+				return {line:this.isLine,active1:this.isActive}
+			},
+			changeClass:function(index){
+			this.current=index;
+			}
+		   }      
+		})
+		
+	</script>
+	</body>  
+</html>
