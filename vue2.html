@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>前端表的增删改查</title>
+<style>
+	table{
+		border:1px solid #e9e9e9;
+		border-collapse: collapse;
+		border-spacing: 0;
+	}
+	th,td{
+		padding: 8px 16px;
+		border:1px solid #e9e9e9;
+	}
+	th{
+		background-color: #f7f7f7;
+		color: #5c6b77;
+		font-weight: 600;
+		}
+</style>
+</head>
+<body>
+<div id="app">
+	<div v-if="books.length>0">
+		<table>    
+			<tr>
+				<th>编号</th>
+				<th>书籍名称</th>
+				<th>出版日期</th>
+				<th>价格</th>
+				<th>购买数量</th>
+				<th>操作</th>
+			</tr>
+			<tr v-for="(item,index) in books">
+				<td>{{index+1}}</td>
+				<td>{{item.name}}</td>
+				<td>{{item.date}}</td>  
+				 <!-- 使用过滤器 -->
+				<td>{{item.price | showPrice}}</td>
+				<td><button  @click="btn_incre(index)">+</button>&nbsp;&nbsp;{{item.count}}&nbsp;&nbsp;<button :disabled="item.count<=1" @click="btn_decre(index)">-</button></td>
+				<td><button @click="btn_del(index)">删除</button></td>
+			</tr>     
+			<tr>
+				<td colspan="6">总价格:{{TotalPrice | showPrice}}</td>
+			</tr>
+		</table>
+	</div>
+	<div v-else>  
+	购物车为空!
+	</div>
+</div>
+<script src="vue.js"></script>
+<script>
+	var v1=new Vue({
+		el:"#app",
+		data:{
+			books:[
+				{id:1,name:'算法导论',date:'2006-9',price:85.00,count:1},
+				{id:1,name:'UML用例',date:'2008-4',price:66.00,count:1},
+				{id:1,name:'软件工程',date:'20020-9',price:120.00,count:1}
+			],
+		},
+		methods:{
+			btn_del(index){
+				this.books.splice(index,1);
+			},
+			btn_incre(index){
+				this.books[index].count++;
+			},   
+			btn_decre(index){
+				this.books[index].count--;
+			}
+		},      
+		computed:{
+			TotalPrice(){
+				let total=0;
+			    for(let item of this.books){
+					total+=item.count*item.price;
+				}
+				return total;
+			}
+		},
+		filters:{
+			showPrice(price){
+				return "$"+price.toFixed(2);
+			}
+		}
+	})		
+</script>
+</body>
+</html>
+    
